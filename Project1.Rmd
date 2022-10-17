@@ -1,0 +1,114 @@
+---
+title: "Project 1- Investigating Wind Turbines "
+author: "Maya Glenn"
+date: "2022-09-15"
+output: 
+  html_document:
+      toc: true
+      toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+  Wind turbines are large windmill-like man made structures that convert kinetic energy from the wind into electric energy in an environmentally friendly fashion. A turbine has multiple parts: tower, hub, and rotor. The tower is the long pole, the hub is the fixture on-top of the pole that holds the blades, and the rotor is made up of the propelling blades.
+  
+![](http://www.daviddarling.info/images/wind_turbine_blades.gif)
+*Diagram of the Parts of a Wind Turbine (Darling).*
+
+  
+  I will be investigating a wind turbine dataset that is from the Open PV Project, a shared effort between the government, photovoltaic (PV) industry, and public to collect and share PV data. The data were collected from the Federal Aviation Administration's Digital Obstacle File, Obstruction Evaluation Airport Airspace Analysis, the American Clean Power Association, Lawrence Berkeley National Laboratory, the United States Geological Survey, other solar incentive programs, and the general public (Hoen).
+  
+  This data set includes 12 variables for each turbine project. The state of the site,  county of the site, year the project began, electrical generation capacity of the turbine (KW), height of the turbine's hub (m), diameter of the turbine's rotor (m), area swept on each rotation, total height of the turbine (m), electrical generation capacity of the turbine (KW), number of turbines in the project, latitude of turbine location, and longitude of turbine location (Kafura).
+  
+  I have chosen the electrical generation capcity of the turbine (KW) to be my chosen outcome. My three predictor variables will be the total height of the turbine (m), the turbine's hub height (m), and the turbine's rotor diameter (m).
+  
+
+## Focusing on the Capacity of the Turbine
+
+``` {r echo =FALSE}
+##Before you do anything, download the database to your computer
+turbines<- read.csv('Project1_wind_turbines.csv')
+```
+Using a histogram, we will take a look at the distribution of the electrical generation capacity of a singular turbine (KW) within each project. The distribution is roughly symmetric. 
+The mean turbine capacity is `r round(mean(turbines$Turbine.Capacity),2)` KW.
+The median turbine capacity is `r round(median(turbines$Turbine.Capacity),2)` KW. 
+The standard deviation of the distribution `r round(sd(turbines$Turbine.Capacity),2)` KW.
+The minimum turbine capacity is `r round(min(turbines$Turbine.Capacity),2)` KW.
+The maximum turbine capacity is `r round(max(turbines$Turbine.Capacity),2)` KW.
+
+```{r echo =FALSE, message = FALSE}
+##Make sure the ggplot package is downloaded 
+library(ggplot2)
+plot1 <- ggplot(turbines)
+plot1 + geom_histogram(aes(x=Turbine.Capacity), col = 'black', fill='blue') + labs(title = 'Distribution of Capacity of the Turbine', x = 'Capacity of Turbine (KW)', y= 'Frequency')
+```
+
+
+## Total Height of Turbine v.s. Capacity of Turbine
+
+Now I will take a look at the effect of the turbine's total height on the capacity of the turbine through a scatterplot. 
+The relationship between the turbine's total height and capacity has a high, positive correlation of `r round(cor(turbines$Turbine.Total_Height, turbines$Turbine.Capacity),2)`. This doesn't necessarily mean that an increase in height *causes* an increase in capacity. However, the graph does show that as height increases, capacity increases linearly. 
+
+```{r echo=FALSE}
+##Creating a scatter plot of turbine total height vs turbine capacity
+plot2<- ggplot(turbines)
+plot2 + geom_point(aes(x=Turbine.Total_Height, y= Turbine.Capacity), col='green') + labs(title='Relationship between Total Height and Capacity of Turbine', x='Total Height of Turbine(m)', y='Capacity of Turbine(KW)')
+```
+
+
+## Height of Turbine Hub v.s. Capacity of Turbine
+
+Next, I will look at the effect of the height of the turbine hub on the capacity of the turbine through a scatterplot. 
+The relationship between the hub's height and the turbine capacity has a high, positive correlation of `r round(cor(turbines$Turbine.Hub_Height, turbines$Turbine.Capacity),2)`. As we know, this doesn't mean that taller hub height causes a greater capacity. However, just like total height, the hub hight is a good indicator of the capacity of the turbine due to the high correlation. 
+
+```{r echo=FALSE}
+## scatterplot of tubrine hub height v turbine capacity
+plot3 <- ggplot(turbines)
+plot3+ geom_point(aes(x=Turbine.Hub_Height, y=Turbine.Capacity), col = 'purple') + labs(title = 'Relationship between Hub Height and Capacity of Turbine', x='Hub Height(m)', y='Capacity of Turbine(KW)')
+```
+
+
+## Diameter of Turbine Rotor v.s. Capacity of Turbine
+
+Finally, I will look at the effect of the diameter of the turbine rotor on the capacity of the turbine through a scatterplot. 
+The relationship between the rotor's diameter and the turbine's capacity has a high, positivev correlation of `r round(cor(turbines$Turbine.Rotor_Diameter, turbines$Turbine.Capacity),2)`. Once again, this doesn't mean that greater diameter length causes a greater capacity. However, just like total height and hub height, the rotor diameter is a good predictor of the capacity of the turbine due to the high correlation. 
+
+```{r echo=FALSE}
+##scatter plot of turbine rotor diameter v turbine capacity
+plot4<- ggplot(turbines)
+plot4 +geom_point(aes(x=Turbine.Rotor_Diameter, y=Turbine.Capacity), col = 'red') + labs(title = 'Relationship between Rotor Diameter and Capacity of Turbine', x='Rotor Diameter(m)', y='Capacity of Turbine(KW)') 
+```
+
+
+
+## Conclusion
+
+We just looked at the relationship that the electrical generation capacity of a turbine has with total height, hub height, and rotor diameter. The correlations between capacity and the three are `r round(cor(turbines$Turbine.Total_Height, turbines$Turbine.Capacity),2)`, `r round(cor(turbines$Turbine.Hub_Height, turbines$Turbine.Capacity),2)`, `r round(cor(turbines$Turbine.Rotor_Diameter, turbines$Turbine.Capacity),2)`, respectively. Thus, the diameter of the rotor has the highest correlation to electrical generation capacity. Although this conclusion doesn't mean it causes an increase in electrical generation capacity, it is indeed the most useful in predicting the outcome of the electrical generation capacity. 
+
+
+## Areas for Futher Research 
+
+Another important area for further research would be determining the most ideal geographical locations for wind turbines. It would be advantageous to uncover what climate, angle, and elevation level makes the turbines most efficient. We could use the data held in the longitude and latitude variables in this data set as well as other collected data to see which variable has the highest correlation to efficiency of the turbine. 
+
+*For general information on wind turbines, see the helpful links below:*
+
+To learn more about how wind turbines work, go to [energy.gov](https://www.energy.gov/eere/wind/how-do-wind-turbines-work).
+
+To learn more about the science behind wind energy, go to [nrel.gov](https://www.nrel.gov/research/re-wind.html).
+
+To learn more about current events surrounding wind turbines and companies that use wind turbines, go to [cleanpower.org](https://cleanpower.org).
+
+
+## Works Cited
+
+Darling, D. "wind turbine swept area." *The Worlds of David Darlilng*. Available            at:www.daviddarling.info/encyclopedia/S/AE_swept_area.html. Accessed at 21 September       2022. 
+
+Hoen, B. "United States Wind Turbine Database." *U.S. Geological Survey, American Clean      Power (ACP) Association, and Lawrence Berkeley National Laboratory data release*.         Available at: doi.org/10.5066/F7TX3DN0. Accessed at 21 September 2022. 
+
+Kafura, D., Choi, J.M.,Guan, B. "Wind Turbines CSV File." *CORGIS Dataset Project*.         Available at: think.cs.vt.edu/corgis/csv/wind_turbines/. Accessed at 21 September 2022
+
+
