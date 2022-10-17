@@ -66,7 +66,7 @@ Next, I will look at the effect of the height of the turbine hub on the capacity
 The relationship between the hub's height and the turbine capacity has a high, positive correlation of `r round(cor(turbines$Turbine.Hub_Height, turbines$Turbine.Capacity),2)`. As we know, this doesn't mean that taller hub height causes a greater capacity. However, just like total height, the hub hight is a good indicator of the capacity of the turbine due to the high correlation. 
 
 ```{r echo=FALSE}
-## scatterplot of tubrine hub height v turbine capacity
+## scatterplot of turbine hub height v turbine capacity
 plot3 <- ggplot(turbines)
 plot3+ geom_point(aes(x=Turbine.Hub_Height, y=Turbine.Capacity), col = 'purple') + labs(title = 'Relationship between Hub Height and Capacity of Turbine', x='Hub Height(m)', y='Capacity of Turbine(KW)')
 ```
