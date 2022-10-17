@@ -29,7 +29,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Focusing on the Capacity of the Turbine
 
-Suggested: Description of what correlation is to make it clear for the reader. Explain the range of correlation [-1,1] and how the closer you are to -1 or 1 the stronger your correlation. 
 
 ``` {r echo =FALSE}
 ##Before you do anything, download the database to your computer
